@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <section class="home">
+      <div class="container text-center mt-5">
+        <h1>Quiz App</h1>
+        <div class="row g-4 mt-5">
+          <div class="col-md-6 offset-md-3">
+            <div class="form">
+              <input
+                name="amount"
+                id="amount"
+                placeholder="Number Of Questions.."
+                type="text"
+                value="5"
+                class="form-control "
+              />
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <div class="form">
+              <select name="selected" id="selected" class="form-control">
+                <option value="18">Science</option>
+                <option value="10">Book</option>
+                <option value="21">Sports</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <div class="form">
+              <select name="difficulty" id="difficulty" class="form-control">
+                <option value="easy">easy</option>
+                <option value="medium">medium</option>
+                <option value="hard">hard</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <button id="btn" class="btn btn-outline-danger d-block w-100">Submit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mt-5">
+      <div class="container text-center">
+        <h1>Quiz App</h1>
+        <div class="row mt-5">
+          <div class="col-md-8 inner  offset-md-2">
+            <div class="p-3 showQ">
+              
+            </div>
+            <div class="row g-4 py-2">
+              <div class="col-md-6">
+                <button class="btn w-100 btn-outline-danger" id="Prev">Prev</button>
+              </div>
+
+              <div class="col-md-6">
+                <button class="w-100 btn btn-outline-danger" id="Next">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
