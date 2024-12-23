@@ -41,67 +41,66 @@ async function getData(url) {
 function display(questionObj, id) {
   let ans = [];
   ans = [...questionObj.incorrect_answers, questionObj.correct_answer].sort();
-  let blackBox = `<p data-numQu=${id} class="num-qu w-50">Number Questions : <span>${
-    questionData.length
-  }</span></p>
+  let blackBox = `<p class="num-qu w-50">Number Questions : <span>${questionData.length}</span></p>
               <p class="num-qu">Current Questions : <span>${start + 1}</span></p>
               <h2 id="question" class="mt-3 text-start">${questionObj?.question}</h2>
-              <ul class="my-3 py-3" id="options">
-                <li  data-num=0 class='${questionObj.num == 0 ? "active" : ""}'><span>${
+              <ul class="my-3 py-3" data-numqu=${id} id="options">
+                <li  data-num="0" class='${questionObj.num == 0 ? "active" : ""}'><span>${
     ans[0]
   }</span></li>
-                <li data-num=1 class='${questionObj.num == 1 ? "active" : ""}'><span>${
+                <li data-num="1" class='${questionObj.num == 1 ? "active" : ""}'><span>${
     ans[1]
   }</span></li>
-                <li data-num=2 class='${questionObj.num == 2 ? "active" : ""}'><span>${
+                <li data-num="2" class='${questionObj.num == 2 ? "active" : ""}'><span>${
     ans[2]
   }</span></li>
-                <li data-num=3 class='${questionObj.num == 3 ? "active" : ""}'><span>${
+                <li data-num="3" class='${questionObj.num == 3 ? "active" : ""}'><span>${
     ans[3]
   }</span></li>
               </ul>`;
 
   document.querySelector(".showQ").innerHTML = blackBox;
   const lis = document.querySelectorAll("#options li");
-  document.querySelector("#options").addEventListener("click", (e) => {
-    lis.forEach((e) => {
-      e.classList.remove("active");
+  lis.forEach((li) => {
+    li.addEventListener("click", (e) => {
+      lis.forEach((e) => {
+        e.classList.remove("active");
+      });
+      if (e.currentTarget.textContent == questionObj.correct_answer) {
+        const foundObject = arrCollectionNumAnswerAndIds.find(
+          (obj) =>
+            obj.id == e.currentTarget.parentElement.dataset.numqu &&
+            obj.answer == e.currentTarget.textContent
+        );
+        if (!foundObject) {
+          arrCollectionNumAnswerAndIds.push({
+            id: e.currentTarget.parentElement.dataset.numqu,
+            answer: e.currentTarget.textContent,
+          });
+        }
+      } else {
+        const foundObject = arrCollectionNumAnswerAndIds.find(
+          (obj) => obj.id == e.currentTarget.parentElement.dataset.numqu
+        );
+        if (foundObject) {
+          arrCollectionNumAnswerAndIds = arrCollectionNumAnswerAndIds.filter((i) => {
+            return i.id != foundObject.id;
+          });
+        }
+      }
+      // if (e.target.tagName == "SPAN") {
+      // e.target.parentElement.classList.add("active");
+      // questionObj["num"] = e.target.parentElement.dataset.num;
+      // } else if
+      //  if(e.target.tagName == "LI") {
+      e.currentTarget.classList.add("active");
+      questionObj["num"] = e.currentTarget.dataset.num;
+      // }
     });
- // Stop Here
-    if (e.target.textContent == questionObj.correct_answer) {
-      const foundObject = arrCollectionNumAnswerAndIds.find(
-        (obj) => obj.id === e.target.dataset.numQu && obj.answer === e.target.textContent
-      );
-      if (!foundObject) {
-        arrCollectionNumAnswerAndIds.push({
-          id: e.target.dataset.numQu,
-          answer: e.target.textContent,
-        });
-      }
-      console.log(arrCollectionNumAnswerAndIds);
-    } else {
-      const foundObject = arrCollectionNumAnswerAndIds.find(
-        (obj) => obj.id === e.target.dataset.numQu
-      );
-      console.log(foundObject);
-      if (foundObject) {
-        console.log('dd')
-        arrCollectionNumAnswerAndIds = arrCollectionNumAnswerAndIds.filter((e) => {
-          return e.id != foundObject.id;
-        });
-      }
-    }
-    console.log(arrCollectionNumAnswerAndIds);
-// /Stop
-    if (e.target.tagName == "SPAN") {
-      e.target.parentElement.classList.add("active");
-      questionObj["num"] = e.target.parentElement.dataset.num;
-    } else if (e.target.tagName == "LI") {
-      e.target.classList.add("active");
-      questionObj["num"] = e.target.dataset.num;
-    }
   });
 }
+// })
+// .addEventListener("click",
 
 buttonNext.addEventListener("click", (e) => {
   if (start < questionData.length - 1) {
