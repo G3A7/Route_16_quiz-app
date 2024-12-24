@@ -1,17 +1,21 @@
 let amount = document.querySelector("#amount");
+let timeIn = document.querySelector("[name='time']");
 let buttonPrev = document.querySelector("#Prev");
 let buttonNext = document.querySelector("#Next");
 let quizSection = document.querySelector(".quiz");
 let home = document.querySelector(".home");
 let questionEl = document.querySelector(".num-qu");
+let showScore = document.querySelector(".result");
 const boxMove = document.querySelector(".box-move");
 const innerTime = document.querySelector(".inner-time");
+const finishBtn = document.querySelector("#btn-finish");
 let selected = "";
 let difficulty = "";
 let start = 0;
 let score = 0;
 let questionData = [];
 let arrCollectionNumAnswerAndIds = [];
+let time;
 document.querySelector("#difficulty").addEventListener("change", (e) => {
   difficulty = e.target.value;
 });
@@ -21,12 +25,25 @@ document.querySelector("#selected").addEventListener("change", (e) => {
 });
 
 document.querySelector("#btn").addEventListener("click", (e) => {
-  if (amount.value < 50) {
+  if (amount.value < 50 && timeIn.value <= 60) {
+    time = timeIn.value * 60;
     getData(
       `https://opentdb.com/api.php?amount=${amount.value}&category=${selected}&difficulty=${difficulty}&type=multiple`
     );
   }
 });
+
+function Time(time) {
+  let minutes = Math.floor(time / 60);
+  let seconds = time % 60;
+  innerTime.innerHTML = `${minutes} m : ${seconds} s`;
+}
+let clear = setInterval(() => {
+  Time(time--);
+  if (time < 0) {
+    clearInterval(clear);
+  }
+}, 1000);
 
 function assign(questionDataP) {
   questionData = questionDataP;
@@ -68,6 +85,7 @@ function showNumberQ(s) {
 function display(questionObj, id) {
   let ans = [];
   ans = [...questionObj.incorrect_answers, questionObj.correct_answer].sort();
+  // console.log(ans);
   questionEl.innerHTML = `Question ${id + 1} of ${questionData.length}`;
   let blackBox = `
               <h2 id="question" class="mt-3 ">${questionObj?.question}</h2>
@@ -115,19 +133,14 @@ function display(questionObj, id) {
           });
         }
       }
-      // if (e.target.tagName == "SPAN") {
-      // e.target.parentElement.classList.add("active");
-      // questionObj["num"] = e.target.parentElement.dataset.num;
-      // } else if
-      //  if(e.target.tagName == "LI") {
+
       e.currentTarget.classList.add("active");
       questionObj["num"] = e.currentTarget.dataset.num;
-      // }
+      console.log(questionObj);
+      console.log(questionData);
     });
   });
 }
-// })
-// .addEventListener("click",
 
 buttonNext.addEventListener("click", (e) => {
   if (start < questionData.length - 1) {
@@ -151,44 +164,17 @@ buttonPrev.addEventListener("click", (e) => {
   }
 });
 
-/*
-category
-: 
-"Science &amp; Nature"
-correct_answer
-: 
-"False"
-difficulty
-: 
-"medium"
-incorrect_answers
-: 
-['True']
-question
-: 
-"Sugar contains fat."
-type
-: 
-"boolean"
+finishBtn.addEventListener("click", (e) => {
+  console.log("sdd");
+  quizSection.classList.replace("d-block", "d-none");
+  showScore.classList.replace("d-none", "d-block");
+  displayRes();
+});
 
+function displayRes() {
+  // console.log(questionData);
+}
 
+function getIdAndAnswer() {
 
-category
-: 
-"Geography"
-correct_answer
-: 
-"Lake Superior "
-difficulty
-: 
-"hard"
-incorrect_answers
-: 
-(3) ['Caspian Sea', 'Lake Michigan', 'Lake Huron']
-question
-: 
-"Which is the largest freshwater lake in the world?"
-type
-: 
-"multiple"
-*/
+}

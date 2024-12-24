@@ -43,12 +43,24 @@
             </div>
           </div>
           <div class="col-md-6 offset-md-3">
+            <div class="form">
+              <input
+                name="time"
+                id="time"
+                placeholder="Enter the Time less than 60m"
+                type="text"
+                value="2"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-3">
             <button id="btn" class="btn btn-outline-danger d-block w-100">Start Quiz</button>
           </div>
         </div>
       </div>
     </section>
-    <section class="mt-5 quiz d-none">
+    <section class="mb-5 quiz d-none">
       <div class="container text-center">
         <h1>Quiz App</h1>
         <div class="row g-3 mt-5">
@@ -58,14 +70,12 @@
             </div>
           </div>
           <div class="col-md-8 offset-md-2 inner">
-            <div class="inner-time">
-              
-            </div>
+            <div class="inner-time fs-3 p-2"></div>
           </div>
           <div class="col-md-8 offset-md-2 inner">
             <div class="inner-header p-2 d-flex justify-content-between align-items-center">
               <p class="num-qu">Question 0 of 0</p>
-              <button class="btn-finish btn btn-danger">Finish</button>
+              <button id="btn-finish" class="btn-finish btn btn-danger">Finish</button>
             </div>
           </div>
           <div class="col-md-8 inner offset-md-2 position-relative">
@@ -79,6 +89,21 @@
                 <button class="w-100 btn btn-outline-danger" id="Next">Next</button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="result d-none mt-5">
+      <div class="container text-center">
+        <h1>Quiz App</h1>
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <p class="mt-5">Score 5 of 5</p>
+            <button id="showRes" class="btn btn-success">Show Result</button>
+          </div>
+          <div class="col-md-8 inner offset-md-2 position-relative">
+            <div class="p-3 showQ"></div>
+            <div class="row g-4 py-2"></div>
           </div>
         </div>
       </div>
