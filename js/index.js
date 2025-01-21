@@ -48,24 +48,43 @@ document.querySelector("#btn").addEventListener("click", (e) => {
 function Time(time) {
   let minutes = Math.floor(time / 60);
   let seconds = time % 60;
-  innerTime.innerHTML = `${minutes} m : ${seconds} s`;
-}
-let clear = setInterval(() => {
-  Time(time--);
-  if (time < 0) {
-    quizSection.classList.replace("d-block", "d-none");
-    showScore.classList.replace("d-none", "d-block");
-    document.querySelector(".cor").innerHTML = arrCollectionNumAnswerAndIds.length;
-    document.querySelector(".inCor").innerHTML =
-      questionData.length - arrCollectionNumAnswerAndIds.length;
-    clearInterval(clear);
+  if (time == 0) {
+    innerTime.innerHTML = `  <i class="fa fa-spin fa-spinner"></i>`;
+  } else {
+    innerTime.innerHTML = `${minutes} m : ${seconds} s`;
   }
-}, 1000);
+}
+let clear = 1;
+function StartTime() {
+  clear = setInterval(() => {
+    Time(time--);
+    if (time < 0) {
+      quizSection.classList.replace("d-block", "d-none");
+      showScore.classList.replace("d-none", "d-block");
+      document.querySelector(".cor").innerHTML = arrCollectionNumAnswerAndIds.length;
+      document.querySelector(".inCor").innerHTML =
+        questionData.length - arrCollectionNumAnswerAndIds.length;
+      clearInterval(clear);
+    }
+  }, 1000);
+}
+
+function btnBackFn() {
+  time = 0;
+  clear = setInterval(() => {
+    Time(time--);
+    if (time < 0) {
+      clearInterval(clear);
+    }
+  }, 1000);
+}
+
 function assign(questionDataP) {
   questionData = questionDataP;
 }
 async function getData(url) {
   try {
+    StartTime();
     const resData = await fetch(`${url}`);
     const { results } = await resData.json();
     quizSection.classList.replace("d-none", "d-block");
@@ -74,6 +93,7 @@ async function getData(url) {
     assignAns();
     display(questionData[0], 0);
     showNumberQ(0);
+    innerTime.innerHTML = `  <i class="fa fa-spin fa-spinner"></i>`;
     console.log(questionData);
   } catch (e) {
     console.log(e);
@@ -231,6 +251,7 @@ buttonPrev.addEventListener("click", (e) => {
 });
 
 finishBtn.addEventListener("click", (e) => {
+  clearInterval(clear);
   console.log(copyArrAnswerOnly);
   quizSection.classList.replace("d-block", "d-none");
   showScore.classList.replace("d-none", "d-block");
@@ -254,6 +275,8 @@ btnRes.addEventListener("click", (e) => {
   questionData.forEach((e, i) => {
     ans = [...e.incorrect_answers, e.correct_answer].sort();
     blackBox += `
+       <div class="ress">
+       
        <p class='fs-4 mt-2'> <span>${i + 1}.</span> ${e.question}</p>
     <ul class="ul-mobile my-3 py-3"  id="options">
       <li class="${
@@ -268,12 +291,15 @@ btnRes.addEventListener("click", (e) => {
       <li class="${
         e.num == copyArrAnswerOnly[i]?.idx && e.num == 3 ? "active" : e.num == 3 ? "noActive" : null
       } ${copyArrAnswerOnly[i]?.idx == 3 ? "active" : null}"><span>${ans[3]}</span></li>
-    </ul>`;
+    </ul>
+       
+       <div/>`;
   });
   document.querySelector(".showAnswerAndWrong").innerHTML = blackBox;
 });
 btnBack.addEventListener("click", (e) => {
-  // location.("/");
+  btnBackFn();
   home.classList.replace("d-none", "d-block");
   showScore.classList.replace("d-block", "d-none");
+  document.querySelector(".showAnswerAndWrong").innerHTML = "";
 });
