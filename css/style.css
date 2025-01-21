@@ -45,6 +45,10 @@ li::after {
 li.active::after {
   width: 100%;
 }
+li.noActive::after {
+  background-color: red !important;
+  width: 100%;
+}
 #question {
   color: #666;
 }
@@ -84,19 +88,23 @@ body {
   width: 100%;
   background-color: #00000042;
   /* background-color: red; */
-  color: #FFF;
+  color: #fff;
 }
 .box-move .box {
   cursor: pointer;
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #FFF;
+  border: 1px solid #fff;
   text-align: center;
 }
-.box-move .box.active{
+.box-move .box.active {
   background-color: rgb(98, 20, 170);
   border: 1px solid rgb(98, 20, 170);
 }
+/* .box-move .box.noActive {
+  background-color: rgb(217, 42, 11);
+  border: 1px solid rgba(170, 48, 20, 0.903);
+} */
 .num-qu {
   padding-bottom: 6px;
   margin-top: 0;
@@ -106,9 +114,66 @@ body {
   opacity: 0.5;
   cursor: no-drop !important;
 }
-
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.div-circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: #000;
+  /* background-image: conic-gradient(red 80%, transparent 0%); */
+}
+.div-circle > p {
+  position: relative;
+  z-index: 5;
+}
+.div-circle::after {
+  content: "";
+  position: absolute;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  background-color: #fff;
+  border-radius: 50%;
+}
+.show-correct-wrong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.show-correct-wrong > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.show-correct-wrong > div > p:nth-child(even) {
+  text-align: center;
+  border-radius: 50%;
+  /* padding: 5px; */
+  /* width: 20px; */
+  /* height: 20px; */
+  /* box-shadow: 0 0 0 5px green; */
+}
 @media (min-width: 992px) {
   .box-move {
     width: 50%;
+  }
+}
+@media (max-width: 992px) {
+  ul {
+    flex-direction: column;
+  }
+  ul li {
+    width: 100%;
   }
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -19,7 +20,7 @@
                 id="amount"
                 placeholder="Number Of Questions.."
                 type="text"
-                value="5"
+                value=""
                 class="form-control"
               />
             </div>
@@ -49,7 +50,7 @@
                 id="time"
                 placeholder="Enter the Time less than 60m"
                 type="text"
-                value="2"
+                value=""
                 class="form-control"
               />
             </div>
@@ -93,21 +94,44 @@
         </div>
       </div>
     </section>
-    <section class="result d-none mt-5">
-      <div class="container text-center">
-        <h1>Quiz App</h1>
+    <section class="result d-none mb-5 mt-5">
+      <div class="container">
         <div class="row">
-          <div class="col-md-6 offset-md-3">
-            <p class="mt-5">Score 5 of 5</p>
-            <button id="showRes" class="btn btn-success">Show Result</button>
+          <div class="col-md-8 offset-md-2">
+            <div class="show-res shadow-sm p-3 bg-white rounded-3 text-dark">
+              <p>Your Score</p>
+              <div class="statistics">
+                <div class="wrap">
+                  <div class="div-circle">
+                    <p>111</p>
+                  </div>
+                  <div class="show-correct-wrong">
+                    <div>
+                      <p>Correct :</p>
+                      <p class="cor">9</p>
+                    </div>
+                    <div>
+                      <p>Incorrect :</p>
+                      <p class="inCor">9</p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="btns-res-back d-flex align-items-center justify-content-center gap-3 mt-4"
+                >
+                  <button class="btn-back btn btn-outline-primary">Back</button>
+                  <button class="btn-Res btn btn-outline-info">Show Result</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-8 inner offset-md-2 position-relative">
-            <div class="p-3 showQ"></div>
-            <div class="row g-4 py-2"></div>
+          <div class="col-md-8 offset-md-2">
+            <div class="showAnswerAndWrong"></div>
           </div>
         </div>
       </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/index.js"></script>
   </body>

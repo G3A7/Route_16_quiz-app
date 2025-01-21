@@ -6,9 +6,12 @@ let quizSection = document.querySelector(".quiz");
 let home = document.querySelector(".home");
 let questionEl = document.querySelector(".num-qu");
 let showScore = document.querySelector(".result");
+let btnRes = document.querySelector(".btn-Res");
+let btnBack = document.querySelector(".btn-back");
 const boxMove = document.querySelector(".box-move");
 const innerTime = document.querySelector(".inner-time");
 const finishBtn = document.querySelector("#btn-finish");
+let arrAnswerOnly = [];
 let selected = "";
 let difficulty = "";
 let start = 0;
@@ -16,6 +19,7 @@ let score = 0;
 let questionData = [];
 let arrCollectionNumAnswerAndIds = [];
 let time;
+var notyf = new Notyf({ position: { x: "center", y: "top" } });
 document.querySelector("#difficulty").addEventListener("change", (e) => {
   difficulty = e.target.value;
 });
@@ -25,7 +29,15 @@ document.querySelector("#selected").addEventListener("change", (e) => {
 });
 
 document.querySelector("#btn").addEventListener("click", (e) => {
-  if (amount.value < 50 && timeIn.value <= 60) {
+  if (amount.value <= 0 || amount.value > 50) {
+    notyf.error("number of question must be less than 50", {
+      duration: 2000,
+    });
+  } else if (timeIn.value > 60 || timeIn.value <= 0) {
+    notyf.error("time must be less than 60m", {
+      duration: 2000,
+    });
+  } else {
     time = timeIn.value * 60;
     getData(
       `https://opentdb.com/api.php?amount=${amount.value}&category=${selected}&difficulty=${difficulty}&type=multiple`
@@ -41,22 +53,31 @@ function Time(time) {
 let clear = setInterval(() => {
   Time(time--);
   if (time < 0) {
+    quizSection.classList.replace("d-block", "d-none");
+    showScore.classList.replace("d-none", "d-block");
+    document.querySelector(".cor").innerHTML = arrCollectionNumAnswerAndIds.length;
+    document.querySelector(".inCor").innerHTML =
+      questionData.length - arrCollectionNumAnswerAndIds.length;
     clearInterval(clear);
   }
 }, 1000);
-
 function assign(questionDataP) {
   questionData = questionDataP;
 }
 async function getData(url) {
-  const resData = await fetch(`${url}`);
-  const { results } = await resData.json();
-  quizSection.classList.replace("d-none", "d-block");
-  home.classList.replace("d-block", "d-none");
-  assign(results);
-  display(questionData[0], 0);
-  showNumberQ(0);
-  console.log(questionData);
+  try {
+    const resData = await fetch(`${url}`);
+    const { results } = await resData.json();
+    quizSection.classList.replace("d-none", "d-block");
+    home.classList.replace("d-block", "d-none");
+    assign(results);
+    assignAns();
+    display(questionData[0], 0);
+    showNumberQ(0);
+    console.log(questionData);
+  } catch (e) {
+    console.log(e);
+  }
   // Timer  ;
 }
 
@@ -75,21 +96,47 @@ function showNumberQ(s) {
       num.target.classList.add("active");
       start = +num.target.dataset.num;
       s = start;
+      if (s == questionData.length - 1) {
+        buttonNext.classList.add("opacity-50-cursor");
+      } else {
+        buttonNext.classList.remove("opacity-50-cursor");
+      }
       questionEl.innerHTML = `Question ${s + 1} of ${questionData.length}`;
 
       display(questionData[s], s);
     });
   });
 }
-
+let copyArrAnswerOnly = [];
+function assignAns() {
+  let ans = [];
+  questionData.forEach((q, idxQ) => {
+    ans = [...q.incorrect_answers, q.correct_answer].sort();
+    ans.forEach((a, idxA) => {
+      if (a == q.correct_answer) {
+        copyArrAnswerOnly.push({ id: idxQ, idx: idxA });
+      }
+    });
+  });
+}
 function display(questionObj, id) {
   let ans = [];
   ans = [...questionObj.incorrect_answers, questionObj.correct_answer].sort();
+  ans.forEach((e, idx) => {
+    if (e == questionObj.correct_answer) {
+      const flag = arrAnswerOnly.find((e) => {
+        return e.id == id;
+      });
+      if (!flag) {
+        arrAnswerOnly.push({ idx, id });
+      }
+    }
+  });
   // console.log(ans);
   questionEl.innerHTML = `Question ${id + 1} of ${questionData.length}`;
   let blackBox = `
               <h2 id="question" class="mt-3 ">${questionObj?.question}</h2>
-              <ul class="my-3 py-3" data-numqu=${id} id="options">
+              <ul class="ul-mobile my-3 py-3" data-numqu=${id} id="options">
                 <li  data-num="0" class='${questionObj.num == 0 ? "active" : ""}'><span>${
     ans[0]
   }</span></li>
@@ -121,6 +168,7 @@ function display(questionObj, id) {
           arrCollectionNumAnswerAndIds.push({
             id: e.currentTarget.parentElement.dataset.numqu,
             answer: e.currentTarget.textContent,
+            dataNumAnswer: e.currentTarget.dataset.num,
           });
         }
       } else {
@@ -133,8 +181,11 @@ function display(questionObj, id) {
           });
         }
       }
-
+      console.log(arrCollectionNumAnswerAndIds);
       e.currentTarget.classList.add("active");
+      // console.log(e.currentTarget.dataset.num);
+
+      // الاجابه اللي هو اختارها
       questionObj["num"] = e.currentTarget.dataset.num;
       console.log(questionObj);
       console.log(questionData);
@@ -143,20 +194,35 @@ function display(questionObj, id) {
 }
 
 buttonNext.addEventListener("click", (e) => {
+  // if (start == questionData.length - 1) {
+  //   buttonNext.classList.add("opacity-50-cursor");
+  // }
+
   if (start < questionData.length - 1) {
     start++;
+    if (start == questionData.length - 1) {
+      buttonNext.classList.add("opacity-50-cursor");
+    }
     display(questionData[start], start);
+    console.log("Next", start);
     buttonPrev.classList.remove("opacity-50-cursor");
     showNumberQ(start);
   } else {
     buttonNext.classList.add("opacity-50-cursor");
   }
 });
+if (start == 0) {
+  buttonPrev.classList.add("opacity-50-cursor");
+}
 buttonPrev.addEventListener("click", (e) => {
   if (start > 0) {
     start--;
+    if (start == 0) {
+      buttonPrev.classList.add("opacity-50-cursor");
+    }
     display(questionData[start], start);
     showNumberQ(start);
+    console.log("Prev ", start);
 
     buttonNext.classList.remove("opacity-50-cursor");
   } else {
@@ -165,16 +231,47 @@ buttonPrev.addEventListener("click", (e) => {
 });
 
 finishBtn.addEventListener("click", (e) => {
-  console.log("sdd");
+  console.log(copyArrAnswerOnly);
   quizSection.classList.replace("d-block", "d-none");
   showScore.classList.replace("d-none", "d-block");
-  displayRes();
+  // console.log(document.querySelector(".div-circle"));
+  document.querySelector(".div-circle").style.cssText = `  
+    background-image: conic-gradient(red ${Math.trunc(
+      (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
+    )}%, transparent 0%);
+  `;
+
+  document.querySelector(".div-circle").querySelector("p").innerHTML = `${
+    (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
+  }%`;
+  document.querySelector(".cor").innerHTML = arrCollectionNumAnswerAndIds.length;
+  document.querySelector(".inCor").innerHTML =
+    questionData.length - arrCollectionNumAnswerAndIds.length;
 });
-
-function displayRes() {
-  // console.log(questionData);
-}
-
-function getIdAndAnswer() {
-
-}
+btnRes.addEventListener("click", (e) => {
+  let ans = [];
+  let blackBox = "";
+  questionData.forEach((e, i) => {
+    ans = [...e.incorrect_answers, e.correct_answer].sort();
+    blackBox += `
+       <p class='fs-4 mt-2'> <span>${i + 1}.</span> ${e.question}</p>
+    <ul class="ul-mobile my-3 py-3"  id="options">
+      <li class="${
+        e.num == copyArrAnswerOnly[i]?.idx && e.num == 0 ? "active" : e.num == 0 ? "noActive" : null
+      } ${copyArrAnswerOnly[i]?.idx == 0 ? "active" : null} "><span>${ans[0]}</span></li>
+      <li class="${
+        e.num == copyArrAnswerOnly[i]?.idx && e.num == 1 ? "active" : e.num == 1 ? "noActive" : null
+      } ${copyArrAnswerOnly[i]?.idx == 1 ? "active" : null}"><span>${ans[1]}</span></li>
+      <li class="${
+        e.num == copyArrAnswerOnly[i]?.idx && e.num == 2 ? "active" : e.num == 2 ? "noActive" : null
+      } ${copyArrAnswerOnly[i]?.idx == 2 ? "active" : null}"><span>${ans[2]}</span></li>
+      <li class="${
+        e.num == copyArrAnswerOnly[i]?.idx && e.num == 3 ? "active" : e.num == 3 ? "noActive" : null
+      } ${copyArrAnswerOnly[i]?.idx == 3 ? "active" : null}"><span>${ans[3]}</span></li>
+    </ul>`;
+  });
+  document.querySelector(".showAnswerAndWrong").innerHTML = blackBox;
+});
+btnBack.addEventListener("click", (e) => {
+  location.assign("/");
+});
