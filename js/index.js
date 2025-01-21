@@ -142,16 +142,16 @@ function assignAns() {
 function display(questionObj, id) {
   let ans = [];
   ans = [...questionObj.incorrect_answers, questionObj.correct_answer].sort();
-  ans.forEach((e, idx) => {
-    if (e == questionObj.correct_answer) {
-      const flag = arrAnswerOnly.find((e) => {
-        return e.id == id;
-      });
-      if (!flag) {
-        arrAnswerOnly.push({ idx, id });
-      }
-    }
-  });
+  // ans.forEach((e, idx) => {
+  //   if (e == questionObj.correct_answer) {
+  //     const flag = arrAnswerOnly.find((e) => {
+  //       return e.id == id;
+  //     });
+  //     if (!flag) {
+  //       arrAnswerOnly.push({ idx, id });
+  //     }
+  //   }
+  // });
   // console.log(ans);
   questionEl.innerHTML = `Question ${id + 1} of ${questionData.length}`;
   let blackBox = `
@@ -252,7 +252,7 @@ buttonPrev.addEventListener("click", (e) => {
 
 finishBtn.addEventListener("click", (e) => {
   clearInterval(clear);
-  console.log(copyArrAnswerOnly);
+  console.log("ansOnly", copyArrAnswerOnly);
   quizSection.classList.replace("d-block", "d-none");
   showScore.classList.replace("d-none", "d-block");
   // console.log(document.querySelector(".div-circle"));
@@ -296,6 +296,7 @@ btnRes.addEventListener("click", (e) => {
        <div/>`;
   });
   document.querySelector(".showAnswerAndWrong").innerHTML = blackBox;
+  copyArrAnswerOnly = [];
 });
 btnBack.addEventListener("click", (e) => {
   btnBackFn();
@@ -304,4 +305,6 @@ btnBack.addEventListener("click", (e) => {
   home.classList.replace("d-none", "d-block");
   showScore.classList.replace("d-block", "d-none");
   document.querySelector(".showAnswerAndWrong").innerHTML = "";
+  copyArrAnswerOnly = [];
+  arrCollectionNumAnswerAndIds = [];
 });
