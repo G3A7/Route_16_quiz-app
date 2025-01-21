@@ -273,5 +273,7 @@ btnRes.addEventListener("click", (e) => {
   document.querySelector(".showAnswerAndWrong").innerHTML = blackBox;
 });
 btnBack.addEventListener("click", (e) => {
-  location.reload("");
+  // location.("/");
+  home.classList.replace("d-none", "d-block");
+  showScore.classList.replace("d-block", "d-none");
 });
