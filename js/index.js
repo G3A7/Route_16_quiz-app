@@ -121,6 +121,9 @@ function showNumberQ(s) {
       } else {
         buttonNext.classList.remove("opacity-50-cursor");
       }
+      if (s > 0) {
+        buttonPrev.classList.remove("opacity-50-cursor");
+      }
       questionEl.innerHTML = `Question ${s + 1} of ${questionData.length}`;
 
       display(questionData[s], s);
@@ -261,7 +264,7 @@ finishBtn.addEventListener("click", (e) => {
       (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
     )}%, #EEE 0%);
   `;
-
+  // document.querySelector(".div-circle").querySelector("p").innerHTML = "";
   document.querySelector(".div-circle").querySelector("p").innerHTML = `${Math.trunc(
     (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
   )}%`;
@@ -307,4 +310,10 @@ btnBack.addEventListener("click", (e) => {
   document.querySelector(".showAnswerAndWrong").innerHTML = "";
   copyArrAnswerOnly = [];
   arrCollectionNumAnswerAndIds = [];
+  document.querySelector(".div-circle").querySelector("p").innerHTML = "";
+  start = 0;
+  buttonNext.classList.remove("opacity-50-cursor");
+  if (start == 0) {
+    buttonPrev.classList.add("opacity-50-cursor");
+  }
 });
