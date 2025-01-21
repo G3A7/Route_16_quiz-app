@@ -238,12 +238,12 @@ finishBtn.addEventListener("click", (e) => {
   document.querySelector(".div-circle").style.cssText = `  
     background-image: conic-gradient(red ${Math.trunc(
       (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
-    )}%, transparent 0%);
+    )}%, #EEE 0%);
   `;
 
-  document.querySelector(".div-circle").querySelector("p").innerHTML = `${
+  document.querySelector(".div-circle").querySelector("p").innerHTML = `${Math.trunc(
     (arrCollectionNumAnswerAndIds.length / questionData.length) * 100
-  }%`;
+  )}%`;
   document.querySelector(".cor").innerHTML = arrCollectionNumAnswerAndIds.length;
   document.querySelector(".inCor").innerHTML =
     questionData.length - arrCollectionNumAnswerAndIds.length;
