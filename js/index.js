@@ -273,5 +273,5 @@ btnRes.addEventListener("click", (e) => {
   document.querySelector(".showAnswerAndWrong").innerHTML = blackBox;
 });
 btnBack.addEventListener("click", (e) => {
-  location.assign("/");
+  location.reload("");
 });
