@@ -299,18 +299,21 @@ btnRes.addEventListener("click", (e) => {
   copyArrAnswerOnly = [];
 });
 btnBack.addEventListener("click", (e) => {
-  btnBackFn();
-  amount.value = "";
-  timeIn.value = "";
-  home.classList.replace("d-none", "d-block");
-  showScore.classList.replace("d-block", "d-none");
-  document.querySelector(".showAnswerAndWrong").innerHTML = "";
-  copyArrAnswerOnly = [];
-  arrCollectionNumAnswerAndIds = [];
-  document.querySelector(".div-circle").querySelector("p").innerHTML = "";
-  start = 0;
-  buttonNext.classList.remove("opacity-50-cursor");
-  if (start == 0) {
-    buttonPrev.classList.add("opacity-50-cursor");
-  }
+
+
+  location.assign('/');
+  // btnBackFn();
+  // amount.value = "";
+  // timeIn.value = "";
+  // home.classList.replace("d-none", "d-block");
+  // showScore.classList.replace("d-block", "d-none");
+  // document.querySelector(".showAnswerAndWrong").innerHTML = "";
+  // copyArrAnswerOnly = [];
+  // arrCollectionNumAnswerAndIds = [];
+  // document.querySelector(".div-circle").querySelector("p").innerHTML = "";
+  // start = 0;
+  // buttonNext.classList.remove("opacity-50-cursor");
+  // if (start == 0) {
+  //   buttonPrev.classList.add("opacity-50-cursor");
+  // }
 });
