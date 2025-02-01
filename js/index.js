@@ -299,9 +299,7 @@ btnRes.addEventListener("click", (e) => {
   copyArrAnswerOnly = [];
 });
 btnBack.addEventListener("click", (e) => {
-
-
-  location.assign('/');
+  location.assign("https://g3a7.github.io/quiz-app/");
   // btnBackFn();
   // amount.value = "";
   // timeIn.value = "";
