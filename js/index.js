@@ -159,17 +159,6 @@ function assignAns() {
 function display(questionObj, id) {
   let ans = [];
   ans = [...questionObj.incorrect_answers, questionObj.correct_answer].sort();
-  // ans.forEach((e, idx) => {
-  //   if (e == questionObj.correct_answer) {
-  //     const flag = arrAnswerOnly.find((e) => {
-  //       return e.id == id;
-  //     });
-  //     if (!flag) {
-  //       arrAnswerOnly.push({ idx, id });
-  //     }
-  //   }
-  // });
-  // console.log(ans);
   questionEl.innerHTML = `Question ${id + 1} of ${questionData.length}`;
   let blackBox = `
               <h2 id="question" class="mt-3 ">${questionObj?.question}</h2>
@@ -271,6 +260,7 @@ finishBtn.addEventListener("click", finishFn);
 
 btnRes.addEventListener("click", (e) => {
   let ans = [];
+  btnRes.style.cssText = `display:none`;
   let blackBox = "";
   questionData.forEach((e, i) => {
     ans = [...e.incorrect_answers, e.correct_answer].sort();
@@ -300,6 +290,7 @@ btnRes.addEventListener("click", (e) => {
 });
 btnBack.addEventListener("click", (e) => {
   location.assign("https://g3a7.github.io/quiz-app/");
+  // location.assign("/");
   // btnBackFn();
   // amount.value = "";
   // timeIn.value = "";
