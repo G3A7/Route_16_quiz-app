@@ -289,7 +289,7 @@ btnRes.addEventListener("click", (e) => {
   copyArrAnswerOnly = [];
 });
 btnBack.addEventListener("click", (e) => {
-  location.assign("https://g3a7.github.io/quiz-app/");
+  location.assign("https://g3a7.github.io/Route_16_quiz-app/");
   // location.assign("/");
   // btnBackFn();
   // amount.value = "";
